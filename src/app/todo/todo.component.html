@@ -1,0 +1,78 @@
+<div class="container">
+    <div class="row">
+        <div class="col-5 m-auto text-center">
+            <h4 class="p-3 bg-dark bg-gradient text-white">{{model.list.name}}</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-5 m-auto text-center">
+            <div class="input-group col-5 m-auto mb-3" >
+                <input #addinput type="text" class="form-control" (keyup.enter)="addItem(addinput.value)"> 
+                <button class="btn btn-primary" (click)="addItem(addinput.value)">Ekle</button>
+            </div>
+        </div>       
+    </div>
+    <div class="row">
+        <div class="col-5 m-auto">
+            <div class="form-check mb-3" *ngIf="getItems().length>0">
+                <input type="checkbox" [(ngModel)]="showall" class="form-check-input checks" name="" id="showall"> 
+                <label for="showall" class="form-check-label">
+                <div [ngSwitch]="showall">
+                    <div *ngSwitchCase="true"><a>Yalnızca Yapılacakları Göster</a></div>
+                    <div *ngSwitchDefault><a>Hepsini Göster</a></div>
+                </div>
+            </label>
+            </div>
+        </div>       
+    </div>
+    <ng-template #todoTable>
+    <div class="row">
+        <div class="col-5 m-auto">
+           
+            <table class="table table-dark table-striped">
+                <thead>
+                    <tr>
+                        <th colspan="4" class="text-center" [ngSwitch]="showall">
+                            
+                                <div *ngSwitchCase="true">Yapılacaklar Listesi </div>
+                                <div *ngSwitchDefault>Yapılacaklar</div>
+                        </th>
+                </tr>
+                  <tr>
+                    <th></th>
+                    <th scope="col">Yapılacak</th>
+                    <th scope="col">Durum</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="getItems().length>0">
+                  <tr  *ngFor="let item of  getItems();let i =index">
+                    <td>{{i+1}}</td>
+                    <td class="yapılacak">{{item.name}}</td>                 
+                    <!--<td class="durum">{{item.status}}</td>-->
+                    <td >
+                        <div [ngSwitch]="item.status">
+                            <div *ngSwitchCase="true" class="true">Yapıldı</div>
+                            <div *ngSwitchCase="false" class="durum">Yapılmadı</div>
+                            <div *ngSwitchDefault></div>
+                        </div>
+                    </td>
+                    <td class="check">   <input type="checkbox" [(ngModel)]="item.status" class="form-check-input" name="" id="yapıldı"> </td>
+                  </tr>
+                </tbody>
+              </table>
+            
+        </div>
+    </div>
+</ng-template>
+    <div class="row" *ngIf="getItems().length==0 else todoTable" >
+        <div class="col-5 m-auto text-center">
+            <div class="alert alert-warning"><i class="text-danger"> Henüz Yapılacak Eklemediniz!</i></div>
+        </div>       
+    </div>
+    <div class="row"*ngIf="getItems().length>0 " >
+        <div class="col-5 m-auto text-center">
+            <div class="alert alert-warning"><i class="text-danger">Yapılacak {{okey()}} Görev Var! </i></div>
+        </div>       
+    </div>
+</div>
